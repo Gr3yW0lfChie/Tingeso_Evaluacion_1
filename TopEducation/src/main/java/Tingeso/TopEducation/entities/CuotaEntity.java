@@ -7,11 +7,11 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "cuotas")
+@Table(name = "cuota")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CuotasEntity {
+public class CuotaEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,5 +35,10 @@ public class CuotasEntity {
 	private Integer porcentajeInteres;
 
 	@Column(name = "porcentaje_descuento")
-	private Integer porcentajeDescuento
+	private Integer porcentajeDescuento;
+
+	@Column(name = "precio_a_pagar")
+	private Integer precioAPagar;
+
+
 }

@@ -28,8 +28,8 @@ public class ArancelEntity {
 	@Column(name = "matricula_pagada")
 	private Boolean matriculaPagada;
 
-	@Column(name = "arancel")
-	private Integer arancel;
+	@Column(name = "arancel_base")
+	private Integer arancelBase;
 
 	@Column(name = "cantidad_cuotas")
 	private Integer cantidadCuotas;
