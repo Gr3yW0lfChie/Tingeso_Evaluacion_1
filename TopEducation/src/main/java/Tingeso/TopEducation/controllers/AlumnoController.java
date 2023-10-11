@@ -5,12 +5,10 @@ import Tingeso.TopEducation.entities.AlumnoEntity;
 import Tingeso.TopEducation.services.AlumnoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Controller
@@ -29,8 +27,13 @@ public class AlumnoController {
 	}
 
 	@GetMapping("/{rut}")
-	public AlumnoEntity obtenerAlumnoPorRut(@PathVariable String rut){
+	public Optional<AlumnoEntity> obtenerAlumnoPorRut(@PathVariable String rut){
 		return alumnoService.obtenerAlumnoPorRut(rut);
+	}
+
+	@PostMapping
+	public AlumnoEntity crearAlumno(@RequestBody AlumnoEntity alumnoEntity){
+		return alumnoService.crearAlumno(alumnoEntity);
 	}
 
 	@DeleteMapping("/{rut}")
