@@ -32,8 +32,13 @@ public class ArancelController {
 	}
 
 	@PostMapping
-	public ArancelEntity crearArancel(@RequestBody ArancelEntity arancelEntity){
-		return arancelService.crearArancel(arancelEntity);
+	public String modificarArancel(@RequestParam("rut") String rut,
+								   @RequestParam("matricula") int matricula,
+								   @RequestParam("matriculaPagada") boolean matriculaPagada,
+								   @RequestParam("arancelBase") int arancelBase,
+								   @RequestParam("cantidadCuotas") int cantidadCuotas){
+		arancelService.modificarArancel(rut, matricula, matriculaPagada, arancelBase, cantidadCuotas);
+		return "redirect:/creacionCuotas";
 	}
 
 	@DeleteMapping("/{id}")

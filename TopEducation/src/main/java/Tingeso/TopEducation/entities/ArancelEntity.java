@@ -18,9 +18,9 @@ public class ArancelEntity {
 	@Column(name = "id_arancel", unique = true, nullable = false)
 	private Long idArancel;
 
-	@OneToOne
-	@JoinColumn(name = "rut_Alumno", referencedColumnName = "rut")
-	private AlumnoEntity alumno;
+	//Hace la relación con la entidad alumno
+	@Column(name = "rut_alumno")
+	private String rutAlumno;
 
 	@Column(name = "matricula")
 	private Integer matricula;

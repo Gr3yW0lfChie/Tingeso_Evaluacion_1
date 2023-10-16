@@ -3,37 +3,55 @@ package Tingeso.TopEducation.controllers;
 
 import Tingeso.TopEducation.entities.AlumnoEntity;
 import Tingeso.TopEducation.services.AlumnoService;
+import Tingeso.TopEducation.services.ArancelService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 
 @Controller
-@RequestMapping("/alumnos")
+@RequestMapping
 public class AlumnoController {
 	private final AlumnoService alumnoService;
 
+	private final ArancelService arancelService;
 	@Autowired
-	public AlumnoController(AlumnoService alumnoService){
+	public AlumnoController(AlumnoService alumnoService, ArancelService arancelService){
 		this.alumnoService = alumnoService;
+		this.arancelService = arancelService;
+
 	}
 
-	@GetMapping
-	public List<AlumnoEntity> obtenerAlumnos(){
-		return alumnoService.obtenerAlumnos();
+	@GetMapping("/listaAlumnos")
+	public String listar(Model model) {
+		ArrayList<AlumnoEntity> alumnos = alumnoService.obtenerAlumnos();
+		model.addAttribute("alumnos", alumnos);
+		return "index";
 	}
 
-	@GetMapping("/{rut}")
-	public Optional<AlumnoEntity> obtenerAlumnoPorRut(@PathVariable String rut){
-		return alumnoService.obtenerAlumnoPorRut(rut);
+	@GetMapping("/nuevoAlumno")
+	public String alumno(){
+		return "nuevoAlumno";
 	}
-
-	@PostMapping
-	public AlumnoEntity crearAlumno(@RequestBody AlumnoEntity alumnoEntity){
-		return alumnoService.crearAlumno(alumnoEntity);
+	@PostMapping("/nuevoAlumno")
+	public String nuevoAlumno(@RequestParam("rut") String rut,
+								 @RequestParam("apellidos") String apellidos,
+								 @RequestParam("nombres") String nombres,
+								 @RequestParam("fechaNacimiento") @DateTimeFormat(pattern = "MM/dd/yyyy") LocalDate fechaNacimiento,
+								 @RequestParam("tipoColegio") String tipoColegio,
+								 @RequestParam("nombreColegio") String nombreColegio,
+								 @RequestParam("fechaEgreso") @DateTimeFormat(pattern = "MM/dd/yyyy") LocalDate fechaEgreso){
+		alumnoService.crearAlumno(rut, apellidos, nombres, fechaNacimiento, tipoColegio, nombreColegio, fechaEgreso);
+		int cantidadMaximaCuotas = alumnoService.obtenerCantidadCuotas(rut);
+		arancelService.crearArancel(rut, 70000, false, 1500000, cantidadMaximaCuotas);
+		return "redirect:/nuevoAlumno";
 	}
 
 	@DeleteMapping("/{rut}")

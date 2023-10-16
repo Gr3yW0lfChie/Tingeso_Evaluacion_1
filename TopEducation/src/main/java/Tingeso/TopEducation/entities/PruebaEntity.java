@@ -18,9 +18,9 @@ public class PruebaEntity {
 	@Column(name = "id_pruebas", unique = true, nullable = false)
 	private Long idPruebas;
 
-	@ManyToOne
-	@JoinColumn(name = "rut_Alumno", referencedColumnName = "rut")
-	private AlumnoEntity alumno;
+	//Hace la relacion con la entidad alumno
+	@Column(name = "rut_alumno")
+	private String alumno;
 
 	@Column(name = "fecha_examen")
 	private LocalDate fechaExamen;

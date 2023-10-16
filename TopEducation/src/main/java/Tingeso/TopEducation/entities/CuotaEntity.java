@@ -18,9 +18,9 @@ public class CuotaEntity {
 	@Column(unique = true, nullable = false)
 	private Long idCuota;
 
-	@ManyToOne
-	@JoinColumn(name = "id_Arancel", referencedColumnName = "id_arancel")
-	private ArancelEntity arancel;
+	//Hace la relacion con la entidad arancel
+	@Column(name = "id_arancel")
+	private Long idArancel;
 
 	@Column(name = "fecha_vencimiento")
 	private LocalDate fechaVencimiento;

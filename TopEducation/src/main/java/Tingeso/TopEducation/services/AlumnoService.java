@@ -5,7 +5,9 @@ import Tingeso.TopEducation.repositories.AlumnoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.time.LocalDate;
+import java.time.Period;
+import java.util.ArrayList;
 import java.util.Optional;
 
 @Service
@@ -19,8 +21,8 @@ public class AlumnoService {
 
 	//----------------------------------------------------------------------------------------------------------
 	//Busqueda
-	public List<AlumnoEntity> obtenerAlumnos() {
-		return alumnoRepository.findAll();
+	public ArrayList<AlumnoEntity> obtenerAlumnos() {
+		return (ArrayList<AlumnoEntity>) alumnoRepository.findAll();
 	}
 
 	public Optional<AlumnoEntity> obtenerAlumnoPorRut(String rut){
@@ -29,8 +31,16 @@ public class AlumnoService {
 
 	//----------------------------------------------------------------------------------------------------------
 	//Crear
-	public AlumnoEntity crearAlumno(AlumnoEntity alumnoEntity){
-		return alumnoRepository.save(alumnoEntity);
+	public void crearAlumno(String rut, String apellidos, String nombres, LocalDate fechaNacimiento, String tipoColegio, String nombreColegio, LocalDate fechaEgreso){
+		AlumnoEntity alumnoEntity = new AlumnoEntity();
+		alumnoEntity.setRut(rut);
+		alumnoEntity.setApellidos(apellidos);
+		alumnoEntity.setNombres(nombres);
+		alumnoEntity.setFechaNacimiento(fechaNacimiento);
+		alumnoEntity.setTipoColegio(tipoColegio);
+		alumnoEntity.setNombreColegio(nombreColegio);
+		alumnoEntity.setFechaEgreso(fechaEgreso);
+		alumnoRepository.save(alumnoEntity);
 	}
 
 	//----------------------------------------------------------------------------------------------------------
@@ -61,8 +71,8 @@ public class AlumnoService {
 
 	//----------------------------------------------------------------------------------------------------------
 	//Obtener descuento por tipo de colegio (Municipal, Subvencionado, Particular)
-	public Integer obtenerDescuentoPorTipoColegio(AlumnoEntity alumno){
-		return switch (alumno.getTipoColegio()) {
+	public Integer obtenerDescuentoPorTipoColegio(String alumno){
+		return switch (alumno) {
 			case "Municipal" -> 20;
 			case "Subvencionado" -> 10;
 			case "Particular" -> 0;
@@ -73,16 +83,36 @@ public class AlumnoService {
 	//----------------------------------------------------------------------------------------------------------
 	//Obtener descuento por tiempo de salida del colegio
 
-	public Integer obtenerDescuentoPorTiempoSalidaColegio(AlumnoEntity alumno){
-		Integer descuento = 0;
+	public Integer obtenerDescuentoPorTiempoSalidaColegio(LocalDate fechaEgreso){
+		int descuento = 0;
+		LocalDate fechaActual = LocalDate.of(2024, 1, 1);
 
-		if(alumno.getFechaEgreso() != null){
-			Integer anioEgreso = alumno.getFechaEgreso().getYear();
-			Integer anioActual = 2021;
-			Integer diferencia = anioActual - anioEgreso;
-			if(diferencia >= 5){
-				descuento = 10;
-			}
+		Period periodo = Period.between(fechaEgreso, fechaActual);
+
+		Integer diferencia = periodo.getYears();
+
+		if(diferencia < 1){
+			descuento = 15;
+		} else if (diferencia < 3){
+			descuento = 8;
+		} else if (diferencia < 5){
+			descuento = 4;
+		} else {
+			descuento = 0;
 		}
+
+		return descuento;
 	}
+
+	//----------------------------------------------------------------------------------------------------------
+	//Obtener cantidad de cuotas que puede tener el alumno
+	public Integer obtenerCantidadCuotas(String alumno){
+		return switch (alumno) {
+			case "Municipal" -> 10;
+			case "Subvencionado" -> 7;
+			case "Particular" -> 4;
+			default -> -1;
+		};
+	}
+
 }
