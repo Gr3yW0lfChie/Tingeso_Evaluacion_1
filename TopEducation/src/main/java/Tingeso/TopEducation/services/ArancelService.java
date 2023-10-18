@@ -12,15 +12,12 @@ import java.util.Optional;
 
 @Service
 public class ArancelService {
-	private final ArancelRepository arancelRepository;
-	private final CuotaService cuotaService;
-
 
 	@Autowired
-	public ArancelService(ArancelRepository arancelRepository, CuotaService cuotaService){
-		this.arancelRepository = arancelRepository;
-		this.cuotaService = cuotaService;
-	}
+	private ArancelRepository arancelRepository;
+
+	@Autowired
+	private CuotaService cuotaService;
 
 
 	//----------------------------------------------------------------------------------------------------------
@@ -33,6 +30,10 @@ public class ArancelService {
 		return arancelRepository.findById(id);
 	}
 
+	public Optional<ArancelEntity> obtenerArancelPorRut(String rutAlumno) {
+		return arancelRepository.findByRutAlumno(rutAlumno);
+	}
+
 	//----------------------------------------------------------------------------------------------------------
 	//Crear
 	public void crearArancel(String rutAlumno, int matricula, boolean matriculaPagada, int arancelBase, int cantidadCuotas){
@@ -43,7 +44,6 @@ public class ArancelService {
 		arancelEntity.setArancelBase(arancelBase);
 		arancelEntity.setCantidadCuotas(cantidadCuotas);
 		arancelRepository.save(arancelEntity);
-		crearCuotas(arancelEntity);
 	}
 
 
@@ -66,6 +66,8 @@ public class ArancelService {
 			arancelActualizado.setArancelBase(arancelBase);
 			arancelActualizado.setCantidadCuotas(cantidadCuotas);
 			arancelRepository.save(arancelActualizado);
+
+			crearCuotas(arancelActualizado);
 		}
 	}
 
@@ -76,7 +78,7 @@ public class ArancelService {
 		LocalDate fechaActual = LocalDate.of(2024, 1, 10);
 		if(arancel.getCantidadCuotas() == 1){
 			CuotaEntity cuota = new CuotaEntity();
-			cuota.setIdArancel(arancel.getIdArancel());
+			cuota.setRutAlumno(arancel.getRutAlumno());
 			cuota.setFechaVencimiento(fechaActual);
 			cuota.setCuotaPagada(true);
 			cuota.setPrecioBase(arancel.getArancelBase());
@@ -88,7 +90,7 @@ public class ArancelService {
 		}else{
 			for(int i = 0; i < arancel.getCantidadCuotas(); i++){
 				CuotaEntity cuota = new CuotaEntity();
-				cuota.setIdArancel(arancel.getIdArancel());
+				cuota.setRutAlumno(arancel.getRutAlumno());
 				cuota.setFechaVencimiento(fechaActual);
 				cuota.setCuotaPagada(false);
 				cuota.setPrecioBase(arancel.getArancelBase()/arancel.getCantidadCuotas());
@@ -102,4 +104,6 @@ public class ArancelService {
 		}
 
 	}
+
+
 }

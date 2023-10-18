@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- ... (resto de tu encabezado) -->
+</head>
+<body>
+<header class="header">
+    <!-- ... (encabezado) -->
+</header>
+<div th:align="center" class="container my-2">
+    <h1><b>Buscar Cuotas por Rut de Alumno</b></h1>
+    <form th:action="@{/buscarCuotasPorRut}" method="POST" class="search-form">
+        <label for="rutAlumno"><strong>RUT del Alumno</strong></label>
+        <input type="text" id="rutAlumno" name="rutAlumno" placeholder="Ingrese el RUT del alumno" required>
+        <button type="submit">Buscar</button>
+    </form>
+    <table th:border="1" class="content-table">
+        <thead>
+        <tr>
+            <th>Rut Alumno</th>
+            <th>Fecha Vencimiento</th>
+            <th>Estado</th>
+            <th>Precio Base</th>
+            <th>Interés</th>
+            <th>Descuento</th>
+            <th>Precio a pagar</th>
+            <th>Acciones</th> <!-- Agregar una columna para el botón de "Pagar" -->
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="cuota : ${cuotas}">
+            <td th:text="${cuota.getRutAlumno()}"></td>
+            <td th:text="${cuota.getFechaVencimiento()}"></td>
+            <td th:text="${cuota.getCuotaPagada() ? 'Pagada' : 'No pagada'}"></td>
+            <td th:text="${cuota.getPrecioBase()}"></td>
+            <td th:text="${cuota.getPorcentajeInteres()}"></td>
+            <td th:text="${cuota.getPorcentajeDescuento()}"></td>
+            <td th:text="${cuota.getPrecioAPagar()}"></td>
+            <td><a th:href="@{'/pagarCuota/' + ${cuota.getIdCuota()}}" class="btn btn-primary">Pagar</a></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

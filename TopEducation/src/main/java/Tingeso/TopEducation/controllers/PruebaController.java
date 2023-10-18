@@ -19,12 +19,9 @@ import java.util.Optional;
 @RequestMapping("/pruebas")
 public class PruebaController {
 
-	private final PruebaService pruebaService;
-
 	@Autowired
-	public PruebaController(PruebaService pruebaService){
-		this.pruebaService = pruebaService;
-	}
+	private PruebaService pruebaService;
+
 
 	@GetMapping
 	public List<PruebaEntity> obtenerPruebas(){

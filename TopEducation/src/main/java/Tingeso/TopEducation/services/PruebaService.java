@@ -22,12 +22,10 @@ import java.util.ArrayList;
 @Service
 public class PruebaService {
 
-	private final PruebaRepository pruebaRepository;
-	private final Logger logg = LoggerFactory.getLogger(PruebaService.class);
 	@Autowired
-	public PruebaService(PruebaRepository pruebaRepository){
-		this.pruebaRepository = pruebaRepository;
-	}
+	private PruebaRepository pruebaRepository;
+	private final Logger logg = LoggerFactory.getLogger(PruebaService.class);
+
 
 
 

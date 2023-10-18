@@ -7,6 +7,7 @@ import Tingeso.TopEducation.services.ArancelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import Tingeso.TopEducation.entities.ArancelEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.ui.Model;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,25 +15,38 @@ import java.util.Optional;
 @RequestMapping("/aranceles")
 public class ArancelController {
 
-	private final ArancelService arancelService;
-
 	@Autowired
-	public ArancelController(ArancelService arancelService){
-		this.arancelService = arancelService;
+	private ArancelService arancelService;
+
+
+
+
+	@GetMapping("/buscarArancel")
+	public String buscarArancelForm() {
+		return "buscarArancel";
 	}
 
-	@GetMapping
-	public List<ArancelEntity> obtenerAranceles(){
-		return arancelService.obtenerAranceles();
+	@PostMapping("/buscarArancel")
+	public String buscarArancel(@RequestParam("rutAlumno") String rutAlumno, Model model) {
+		// Realiza la búsqueda del arancel por el RUT del alumno
+		Optional<ArancelEntity> arancel = arancelService.obtenerArancelPorRut(rutAlumno);
+
+		if (arancel.isPresent()) {
+			model.addAttribute("arancel", arancel.get());
+			return "creacionCuotas"; // Redirige a la página de modificación
+		} else {
+			// Manejar el caso en el que no se encuentre el arancel
+			return "redirect:/buscarArancel";
+		}
 	}
 
-	@GetMapping("/{id}")
-	public Optional<ArancelEntity> obtenerArancelPorId(@PathVariable Long id){
-		return arancelService.obtenerArancelPorId(id);
+	@GetMapping("/creacionCuotas")
+	public String arancel(){
+		return "creacionCuotas";
 	}
 
 	@PostMapping
-	public String modificarArancel(@RequestParam("rut") String rut,
+	public String creacionCuotas(@RequestParam("rut") String rut,
 								   @RequestParam("matricula") int matricula,
 								   @RequestParam("matriculaPagada") boolean matriculaPagada,
 								   @RequestParam("arancelBase") int arancelBase,

@@ -8,16 +8,12 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
-import java.util.Optional;
 
 @Service
 public class AlumnoService {
 
-	private final AlumnoRepository alumnoRepository;
 	@Autowired
-	public AlumnoService(AlumnoRepository alumnoRepository){
-		this.alumnoRepository = alumnoRepository;
-	}
+	private AlumnoRepository alumnoRepository;
 
 	//----------------------------------------------------------------------------------------------------------
 	//Busqueda
@@ -25,7 +21,7 @@ public class AlumnoService {
 		return (ArrayList<AlumnoEntity>) alumnoRepository.findAll();
 	}
 
-	public Optional<AlumnoEntity> obtenerAlumnoPorRut(String rut){
+	public AlumnoEntity obtenerAlumnoPorRut(String rut){
 		return alumnoRepository.findByRut(rut);
 	}
 
@@ -56,17 +52,15 @@ public class AlumnoService {
 	//----------------------------------------------------------------------------------------------------------
 	//Modificar
 	public AlumnoEntity actualizarAlumno(String rut, AlumnoEntity alumnoActualizado){
-		return alumnoRepository.findByRut(rut)
-				.map(alumno -> {
-					alumno.setApellidos(alumnoActualizado.getApellidos());
-					alumno.setNombres(alumnoActualizado.getNombres());
-					alumno.setFechaNacimiento(alumnoActualizado.getFechaNacimiento());
-					alumno.setTipoColegio(alumnoActualizado.getTipoColegio());
-					alumno.setNombreColegio(alumnoActualizado.getNombreColegio());
-					alumno.setFechaEgreso(alumnoActualizado.getFechaEgreso());
-					return alumnoRepository.save(alumno);
-				})
-				.orElseThrow(() -> new RuntimeException("Alumno no encontrado"));
+		AlumnoEntity alumno = alumnoRepository.findByRut(rut);
+		alumno.setRut(alumnoActualizado.getRut());
+		alumno.setApellidos(alumnoActualizado.getApellidos());
+		alumno.setNombres(alumnoActualizado.getNombres());
+		alumno.setFechaNacimiento(alumnoActualizado.getFechaNacimiento());
+		alumno.setTipoColegio(alumnoActualizado.getTipoColegio());
+		alumno.setNombreColegio(alumnoActualizado.getNombreColegio());
+		alumno.setFechaEgreso(alumnoActualizado.getFechaEgreso());
+		return alumnoRepository.save(alumno);
 	}
 
 	//----------------------------------------------------------------------------------------------------------

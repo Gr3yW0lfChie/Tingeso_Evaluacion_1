@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import Tingeso.TopEducation.entities.CuotaEntity;
 import Tingeso.TopEducation.repositories.CuotaRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,17 +13,18 @@ import java.util.Optional;
 @Service
 public class CuotaService {
 
-	private final CuotaRepository cuotaRepository;
-
 	@Autowired
-	public CuotaService(CuotaRepository cuotaRepository){
-		this.cuotaRepository = cuotaRepository;
-	}
+	private CuotaRepository cuotaRepository;
+
 
 	//----------------------------------------------------------------------------------------------------------
 	//Busqueda
-	public List<CuotaEntity> obtenerCuotas() {
-		return cuotaRepository.findAll();
+	public ArrayList<CuotaEntity> obtenerCuotas() {
+		return (ArrayList<CuotaEntity>) cuotaRepository.findAll();
+	}
+
+	public ArrayList<CuotaEntity> findByRutAlumno(String rut) {
+		return cuotaRepository.findByRutAlumno(rut);
 	}
 
 	public Optional<CuotaEntity> obtenerCuotaPorId(Long id){

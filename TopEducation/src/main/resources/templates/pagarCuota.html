@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Modificar Arancel</title>
+    <title>Modificar Cuota</title>
     <link rel="stylesheet"
           href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
@@ -22,7 +22,10 @@
             border: 6px solid #f1f1f1;
         }
 
-        input[type=text], input[type=number], input[type=checkbox] {
+        input[type="text"],
+        input[type="number"],
+        input[type="date"],
+        input[type="checkbox"] {
             width: 100%;
             padding: 16px 8px;
             margin: 8px 0;
@@ -32,7 +35,7 @@
         }
 
         /* Estilo adicional para el input de número */
-        input[type=number] {
+        input[type="number"] {
             -moz-appearance: textfield;
         }
 
@@ -107,31 +110,30 @@
 <header class="header">
     <nav>
     </nav>
-    <a class="btn" href="/listaAranceles"><button>Volver a la lista de aranceles</button></a>
+    <a class="btn" href="/listaCuotas"><button>Volver a la lista de cuotas</button></a>
 </header>
 <div class="mainclass">
-    <form th:action="@{/creacionCuotas}" method="POST">
-        <h1><b>Modificar Arancel</b></h1>
+    <form th:action="@{/modificarCuota}" method="POST">
+        <h1><b>Modificar Cuota</b></h1>
         <div class="formcontainer">
             <hr/>
             <div class="container">
-                <!-- Campo oculto para el ID del arancel -->
-                <input type="hidden" name="idArancel" th:value="${arancel.idArancel}" required>
+                <!-- Campo oculto para el ID de la cuota -->
+                <input type="hidden" name="idCuota" th:value="${cuota.idCuota}" required>
                 <label><strong>RUT del Alumno</strong></label>
-                <input type="text" id="rutAlumno" th:value="${arancel.rutAlumno}"
-                       placeholder="Ingrese el RUT del alumno" name="rutAlumno" required>
-                <label><strong>Matrícula</strong></label>
-                <input type="text" id="matricula" th:value="${arancel.matricula}"
-                       placeholder="70000" name="matricula" required readonly>
-                <label><strong>Matrícula Pagada</strong></label>
-                <input type="checkbox" id="matriculaPagada" th:checked="${arancel.matriculaPagada}" name="matriculaPagada">
-                <label><strong>Arancel Base</strong></label>
-                <input type="text" id="arancelBase" th:value="${arancel.arancelBase}"
-                       placeholder="1500000" name="arancelBase" required readonly>
-                <label><strong>Cantidad de Cuotas</strong></label>
-                <input type="number" id="cantidadCuotas" th:value="${arancel.cantidadCuotas}"
-                       placeholder="Ingrese la cantidad de cuotas" name="cantidadCuotas"
-                       max="${arancel.cantidadCuotas}">
+                <input type="text" id="rutAlumno" th:value="${cuota.rutAlumno}" placeholder="Ingrese el RUT del alumno" name="rutAlumno" readonly>
+                <label><strong>Fecha de Vencimiento</strong></label>
+                <input type="date" id="fechaVencimiento" th:value="${cuota.fechaVencimiento}" name="fechaVencimiento" readonly>
+                <label><strong>Cuota Pagada</strong></label>
+                <input type="checkbox" id="cuotaPagada" th:checked="${cuota.cuotaPagada}" name="cuotaPagada">
+                <label><strong>Precio Base</strong></label>
+                <input type="number" id="precioBase" th:value="${cuota.precioBase}" placeholder="Ingrese el precio base" name="precioBase" readonly>
+                <label><strong>Porcentaje de Interes</strong></label>
+                <input type="number" id="porcentajeInteres" th:value="${cuota.porcentajeInteres}" placeholder="Ingrese el porcentaje de interes" name="porcentajeInteres" readonly>
+                <label><strong>Porcentaje de Descuento</strong></label>
+                <input type="number" id="porcentajeDescuento" th:value="${cuota.porcentajeDescuento}" placeholder="Ingrese el porcentaje de descuento" name="porcentajeDescuento" readonly>
+                <label><strong>Precio a Pagar</strong></label>
+                <input type="number" id="precioAPagar" th:value="${cuota.precioAPagar}" placeholder="Ingrese el precio a pagar" name="precioAPagar" readonly>
             </div>
             <button type="submit">Guardar Cambios</button>
         </div>

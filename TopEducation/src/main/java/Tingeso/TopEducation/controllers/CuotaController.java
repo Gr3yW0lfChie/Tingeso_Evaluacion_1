@@ -1,12 +1,15 @@
 package Tingeso.TopEducation.controllers;
 
+import Tingeso.TopEducation.entities.AlumnoEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import Tingeso.TopEducation.services.CuotaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import Tingeso.TopEducation.entities.CuotaEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,12 +17,10 @@ import java.util.Optional;
 @RequestMapping("/cuotas")
 public class CuotaController {
 
-	private final CuotaService cuotaService;
-
 	@Autowired
-	public CuotaController(CuotaService cuotaService){
-		this.cuotaService = cuotaService;
-	}
+	private CuotaService cuotaService;
+
+
 
 	@GetMapping
 	public List<CuotaEntity> obtenerCuotas(){
@@ -39,6 +40,21 @@ public class CuotaController {
 	@DeleteMapping("/{id}")
 	public void eliminarCuota(@PathVariable Long id){
 		cuotaService.eliminarCuota(id);
+	}
+
+
+	@GetMapping("/listaCuotas")
+	public String listar(Model model) {
+		ArrayList<CuotaEntity> cuotas = cuotaService.obtenerCuotas();
+		model.addAttribute("cuotas", cuotas);
+		return "indexCuotas";
+	}
+
+	@GetMapping("/buscarCuotasPorRut")
+	public String buscarCuotasPorRut(@RequestParam("rut") String rut, Model model) {
+		ArrayList<CuotaEntity> cuotas = cuotaService.findByRutAlumno(rut);
+		model.addAttribute("cuotas", cuotas);
+		return "verCuotaAlumno";
 	}
 
 

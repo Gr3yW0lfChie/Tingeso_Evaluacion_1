@@ -19,15 +19,12 @@ import java.util.Optional;
 @Controller
 @RequestMapping
 public class AlumnoController {
-	private final AlumnoService alumnoService;
-
-	private final ArancelService arancelService;
 	@Autowired
-	public AlumnoController(AlumnoService alumnoService, ArancelService arancelService){
-		this.alumnoService = alumnoService;
-		this.arancelService = arancelService;
+	private AlumnoService alumnoService;
 
-	}
+	@Autowired
+	private ArancelService arancelService;
+
 
 	@GetMapping("/listaAlumnos")
 	public String listar(Model model) {

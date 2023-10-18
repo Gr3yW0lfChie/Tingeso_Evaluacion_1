@@ -15,12 +15,12 @@ public class CuotaEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(unique = true, nullable = false)
+	@Column(name = "id_cuota", unique = true, nullable = false)
 	private Long idCuota;
 
-	//Hace la relacion con la entidad arancel
-	@Column(name = "id_arancel")
-	private Long idArancel;
+	//Hace la relacion con la entidad alumno
+	@Column(name = "rut_alumno")
+	private String rutAlumno;
 
 	@Column(name = "fecha_vencimiento")
 	private LocalDate fechaVencimiento;
