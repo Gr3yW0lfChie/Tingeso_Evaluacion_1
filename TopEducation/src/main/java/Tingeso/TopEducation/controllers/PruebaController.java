@@ -37,11 +37,12 @@ public class PruebaController {
 	public PruebaEntity crearPrueba(@RequestBody PruebaEntity pruebaEntity){
 		return pruebaService.crearPrueba(pruebaEntity);
 	}
-
+	/*
 	@DeleteMapping("/{id}")
 	public void eliminarPrueba(@PathVariable Long id){
 		pruebaService.eliminarPrueba(id);
 	}
+	*/
 
 	@GetMapping("/subirArchivo")
 	public String main() {

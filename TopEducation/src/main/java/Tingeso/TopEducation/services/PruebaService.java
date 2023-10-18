@@ -45,13 +45,22 @@ public class PruebaService {
 		return pruebaRepository.save(pruebaEntity);
 	}
 
+	public void guardarPruebaDB(String rutAlumno, LocalDate fechaPrueba, Integer puntaje){
+		PruebaEntity pruebaEntity = new PruebaEntity();
+		pruebaEntity.setAlumno(rutAlumno);
+		pruebaEntity.setFechaExamen(fechaPrueba);
+		pruebaEntity.setPuntaje(puntaje);
+		crearPrueba(pruebaEntity);
+	}
+
 
 	//----------------------------------------------------------------------------------------------------------
 	//Eliminar
+	/*
 	public void eliminarPrueba(Long id){
 		pruebaRepository.deleteById(id);
 	}
-
+	*/
 
 	@Generated
 	public String guardar(MultipartFile file){
@@ -122,13 +131,6 @@ public class PruebaService {
 	}
 
 
-	public void guardarPruebaDB(String rutAlumno, LocalDate fechaPrueba, Integer puntaje){
-		PruebaEntity pruebaEntity = new PruebaEntity();
-		pruebaEntity.setAlumno(rutAlumno);
-		pruebaEntity.setFechaExamen(fechaPrueba);
-		pruebaEntity.setPuntaje(puntaje);
-		crearPrueba(pruebaEntity);
-	}
 
 
 

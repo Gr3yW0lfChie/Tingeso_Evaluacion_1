@@ -6,7 +6,6 @@ import Tingeso.TopEducation.entities.CuotaEntity;
 import Tingeso.TopEducation.repositories.CuotaRepository;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 
@@ -39,12 +38,27 @@ public class CuotaService {
 
 	//----------------------------------------------------------------------------------------------------------
 	//Eliminar
+	/*
 	public void eliminarCuota(Long id){
 		cuotaRepository.deleteById(id);
 	}
-
+	*/
 	//----------------------------------------------------------------------------------------------------------
 	//Modificar
+
+	public void modificarCuota(Long id, String rutAlumno, Boolean cuotaPagada, Integer precioBase, Integer porcentajeInteres, Integer porcentajeDescuento, Integer precioAPagar){
+		Optional<CuotaEntity> cuota = cuotaRepository.findById(id);
+		if (cuota.isPresent()){
+			CuotaEntity cuotaModificada = cuota.get();
+			cuotaModificada.setRutAlumno(rutAlumno);
+			cuotaModificada.setCuotaPagada(cuotaPagada);
+			cuotaModificada.setPrecioBase(precioBase);
+			cuotaModificada.setPorcentajeInteres(porcentajeInteres);
+			cuotaModificada.setPorcentajeDescuento(porcentajeDescuento);
+			cuotaModificada.setPrecioAPagar(precioAPagar);
+			cuotaRepository.save(cuotaModificada);
+		}
+	}
 
 
 }

@@ -50,9 +50,11 @@ public class AlumnoController {
 		arancelService.crearArancel(rut, 70000, false, 1500000, cantidadMaximaCuotas);
 		return "redirect:/nuevoAlumno";
 	}
-
+	/*
 	@DeleteMapping("/{rut}")
 	public void eliminarAlumno(@PathVariable String rut){
 		alumnoService.eliminarAlumno(rut);
 	}
+	*/
+
 }

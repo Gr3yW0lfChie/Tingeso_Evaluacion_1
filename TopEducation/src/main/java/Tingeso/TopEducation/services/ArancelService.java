@@ -7,7 +7,7 @@ import Tingeso.TopEducation.entities.ArancelEntity;
 import Tingeso.TopEducation.repositories.ArancelRepository;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.util.ArrayList;
 import java.util.Optional;
 
 @Service
@@ -22,15 +22,15 @@ public class ArancelService {
 
 	//----------------------------------------------------------------------------------------------------------
 	//Busqueda
-	public List<ArancelEntity> obtenerAranceles() {
-		return arancelRepository.findAll();
+	public ArrayList<ArancelEntity> obtenerAranceles() {
+		return (ArrayList<ArancelEntity>) arancelRepository.findAll();
 	}
 
 	public Optional<ArancelEntity> obtenerArancelPorId(Long id){
 		return arancelRepository.findById(id);
 	}
 
-	public Optional<ArancelEntity> obtenerArancelPorRut(String rutAlumno) {
+	public ArancelEntity obtenerArancelPorRut(String rutAlumno) {
 		return arancelRepository.findByRutAlumno(rutAlumno);
 	}
 
@@ -50,25 +50,21 @@ public class ArancelService {
 
 	//----------------------------------------------------------------------------------------------------------
 	//Eliminar
-
+	/*
 	public void eliminarArancel(Long id){
 		arancelRepository.deleteById(id);
 	}
-
+	*/
 	//----------------------------------------------------------------------------------------------------------
 	//Actualizar
 	public void modificarArancel(String rutAlumno, int matricula, boolean matriculaPagada, int arancelBase, int cantidadCuotas){
-		Optional<ArancelEntity> arancel = arancelRepository.findByRutAlumno(rutAlumno);
-		if (arancel.isPresent()){
-			ArancelEntity arancelActualizado = arancel.get();
-			arancelActualizado.setMatricula(matricula);
-			arancelActualizado.setMatriculaPagada(matriculaPagada);
-			arancelActualizado.setArancelBase(arancelBase);
-			arancelActualizado.setCantidadCuotas(cantidadCuotas);
-			arancelRepository.save(arancelActualizado);
-
-			crearCuotas(arancelActualizado);
-		}
+		ArancelEntity arancelActualizado = arancelRepository.findByRutAlumno(rutAlumno);
+		arancelActualizado.setMatricula(matricula);
+		arancelActualizado.setMatriculaPagada(matriculaPagada);
+		arancelActualizado.setArancelBase(arancelBase);
+		arancelActualizado.setCantidadCuotas(cantidadCuotas);
+		arancelRepository.save(arancelActualizado);
+		crearCuotas(arancelActualizado);
 	}
 
 

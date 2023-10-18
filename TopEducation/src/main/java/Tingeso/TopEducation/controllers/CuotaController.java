@@ -37,11 +37,12 @@ public class CuotaController {
 		return cuotaService.crearCuota(cuotaEntity);
 	}
 
+	/*
 	@DeleteMapping("/{id}")
 	public void eliminarCuota(@PathVariable Long id){
 		cuotaService.eliminarCuota(id);
 	}
-
+	*/
 
 	@GetMapping("/listaCuotas")
 	public String listar(Model model) {

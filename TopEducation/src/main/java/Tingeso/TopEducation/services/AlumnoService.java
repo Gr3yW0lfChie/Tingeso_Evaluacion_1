@@ -41,13 +41,14 @@ public class AlumnoService {
 
 	//----------------------------------------------------------------------------------------------------------
 	//Eliminar
-
+	/*
 	public void eliminarAlumno(String rut){
 		try{
 			alumnoRepository.deleteByRut(rut);
 		}catch (Exception ignored){
 		}
 	}
+	*/
 
 	//----------------------------------------------------------------------------------------------------------
 	//Modificar

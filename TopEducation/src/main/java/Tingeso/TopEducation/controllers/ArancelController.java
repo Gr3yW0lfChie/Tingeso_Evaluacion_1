@@ -29,15 +29,15 @@ public class ArancelController {
 	@PostMapping("/buscarArancel")
 	public String buscarArancel(@RequestParam("rutAlumno") String rutAlumno, Model model) {
 		// Realiza la búsqueda del arancel por el RUT del alumno
-		Optional<ArancelEntity> arancel = arancelService.obtenerArancelPorRut(rutAlumno);
-
-		if (arancel.isPresent()) {
-			model.addAttribute("arancel", arancel.get());
-			return "creacionCuotas"; // Redirige a la página de modificación
-		} else {
-			// Manejar el caso en el que no se encuentre el arancel
+		ArancelEntity arancel = arancelService.obtenerArancelPorRut(rutAlumno);
+		// Si el arancel existe, se muestra la información del arancel
+		if (arancel != null) {
+			model.addAttribute("arancel", arancel);
+			return "creacionCuotas";
+		}else{
 			return "redirect:/buscarArancel";
 		}
+
 	}
 
 	@GetMapping("/creacionCuotas")
@@ -54,11 +54,11 @@ public class ArancelController {
 		arancelService.modificarArancel(rut, matricula, matriculaPagada, arancelBase, cantidadCuotas);
 		return "redirect:/creacionCuotas";
 	}
-
+	/*
 	@DeleteMapping("/{id}")
 	public void eliminarArancel(@PathVariable Long id){
 		arancelService.eliminarArancel(id);
 	}
-
+	*/
 
 }
