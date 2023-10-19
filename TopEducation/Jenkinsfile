@@ -1,0 +1,48 @@
+pipeline{
+    agent any
+    tools{
+        maven "maven"
+    }
+    stages{
+        stage("Build JAR File"){
+            steps{
+                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/Gr3yW0lfChie/Tingeso_Evaluacion_1']])
+                dir("TopEducation"){
+                    sh "mvn clean install"
+                }
+            }
+        }
+        stage("Test"){
+            steps{
+                dir("TopEducation"){
+                    sh "mvn test"
+                }
+            }
+        }
+        stage("Build Docker Image"){
+            steps{
+                dir("TopEducation"){
+                    sh "docker build -t gr3yw0lfchie/tingeso_top_ed ."
+                }
+            }
+        }
+        stage("Push Docker Image"){
+            steps{
+                dir("TopEducation"){
+                    withCredentials([string(credentialsId: 'dckrhubpassword', variable: 'dckpass')]) {
+                        sh "docker login u gr3yw0lfchie -p ${dckpass}"
+                    }
+                    sh "docker push gr3yw0lfchie/tingeso_top_ed"
+                }
+            }
+        }
+    }
+    post{
+        always{
+            dir("TopEducation"){
+                sh "docker logout"
+            }
+        }
+    }
+
+}

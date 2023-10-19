@@ -68,13 +68,15 @@ public class CuotaService {
 		for (CuotaEntity cuota : cuotas){
 			if (cuota.getFechaVencimiento().isBefore(fechaNueva) && !cuota.getCuotaPagada()){
 				Period period = Period.between(cuota.getFechaVencimiento(), fechaNueva);
-				if (period.getMonths() == 1) {
+				if (period.getMonths() == 0) {
+					cuota.setPorcentajeInteres(0);
+				} else if (period.getMonths() == 1) {
 					cuota.setPorcentajeInteres(3);
 				} else if (period.getMonths() == 2) {
 					cuota.setPorcentajeInteres(6);
 				} else if (period.getMonths() == 3) {
 					cuota.setPorcentajeInteres(9);
-				} else {
+				}else {
 					cuota.setPorcentajeInteres(15);
 				}
 				cuota.setPrecioAPagar(cuota.getPrecioBase() + (cuota.getPrecioBase() * cuota.getPorcentajeInteres() / 100) - (cuota.getPrecioBase() * cuota.getPorcentajeDescuento() / 100));

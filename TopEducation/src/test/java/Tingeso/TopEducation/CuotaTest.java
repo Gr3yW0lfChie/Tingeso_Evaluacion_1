@@ -2,6 +2,7 @@ package Tingeso.TopEducation;
 
 
 import Tingeso.TopEducation.entities.CuotaEntity;
+import Tingeso.TopEducation.repositories.CuotaRepository;
 import Tingeso.TopEducation.services.CuotaService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,8 @@ public class CuotaTest {
 
 	@Autowired
 	private CuotaService cuotaService;
+	@Autowired
+	private CuotaRepository cuotaRepository;
 
 
 	//----------------------------------------------------------------------------------------------------------
@@ -51,6 +54,8 @@ public class CuotaTest {
 	@Test
 	@Transactional
 	void buscarlistaCuotas(){
+		cuotaRepository.deleteAll();
+
 		int precioBase = 1500000/4;
 		cuota.setRutAlumno("12.345.678-2");
 		cuota.setFechaVencimiento(LocalDate.of(2020,10,10));
@@ -74,7 +79,7 @@ public class CuotaTest {
 		ArrayList<CuotaEntity> esperados = new ArrayList<>();
 
 		CuotaEntity aux1 = new CuotaEntity();
-		aux1.setIdCuota(1L);
+		aux1.setIdCuota(16L);
 		aux1.setRutAlumno("12.345.678-2");
 		aux1.setFechaVencimiento(LocalDate.of(2020,10,10));
 		aux1.setCuotaPagada(false);
@@ -84,7 +89,7 @@ public class CuotaTest {
 		aux1.setPrecioAPagar(precioBase);
 
 		CuotaEntity aux2 = new CuotaEntity();
-		aux2.setIdCuota(2L);
+		aux2.setIdCuota(17L);
 		aux2.setRutAlumno("12.345.678-2");
 		aux2.setFechaVencimiento(LocalDate.of(2020,11,10));
 		aux2.setCuotaPagada(false);
@@ -106,6 +111,7 @@ public class CuotaTest {
 	@Test
 	@Transactional
 	void buscarCuotaPorRut(){
+		cuotaRepository.deleteAll();
 		int precioBase = 1500000/4;
 		cuota.setRutAlumno("12.345.678-2");
 		cuota.setFechaVencimiento(LocalDate.of(2020,10,10));
@@ -129,7 +135,7 @@ public class CuotaTest {
 		ArrayList<CuotaEntity> esperados = new ArrayList<>();
 
 		CuotaEntity aux1 = new CuotaEntity();
-		aux1.setIdCuota(8L);
+		aux1.setIdCuota(24L);
 		aux1.setRutAlumno("12.345.678-2");
 		aux1.setFechaVencimiento(LocalDate.of(2020,10,10));
 		aux1.setCuotaPagada(false);
@@ -139,7 +145,7 @@ public class CuotaTest {
 		aux1.setPrecioAPagar(precioBase);
 
 		CuotaEntity aux2 = new CuotaEntity();
-		aux2.setIdCuota(9L);
+		aux2.setIdCuota(25L);
 		aux2.setRutAlumno("12.345.678-2");
 		aux2.setFechaVencimiento(LocalDate.of(2020,11,10));
 		aux2.setCuotaPagada(false);
@@ -240,5 +246,26 @@ public class CuotaTest {
 		Optional<CuotaEntity> cuotaModificada = cuotaService.obtenerCuotaPorId(cuota.getIdCuota());
 
 		cuotaModificada.ifPresent(cuotaEntity -> assertEquals(3, cuotaEntity.getPorcentajeInteres()));
+	}
+
+	@Test
+	@Transactional
+	void modificarCuotasVencidas0(){
+
+		int precioBase = 1500000/4;
+		cuota.setRutAlumno("12.345.678-2");
+		cuota.setFechaVencimiento(LocalDate.of(2020,4,20));
+		cuota.setCuotaPagada(false);
+		cuota.setPrecioBase(precioBase);
+		cuota.setPorcentajeInteres(0);
+		cuota.setPorcentajeDescuento(0);
+		cuota.setPrecioAPagar(precioBase);
+		cuotaService.crearCuota(cuota);
+
+		cuotaService.modificarCuotasVencidas(LocalDate.of(2020,5,1));
+
+		Optional<CuotaEntity> cuotaModificada = cuotaService.obtenerCuotaPorId(cuota.getIdCuota());
+
+		cuotaModificada.ifPresent(cuotaEntity -> assertEquals(0, cuotaEntity.getPorcentajeInteres()));
 	}
 }

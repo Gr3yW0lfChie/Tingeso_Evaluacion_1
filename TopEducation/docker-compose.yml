@@ -1,0 +1,71 @@
+version: "3.8"
+services:
+  nginx:
+    image: nginx:latest
+    container_name: nginx-proxy
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+    depends_on:
+      - app1
+      - app2
+      - app3
+
+  postgres-db:
+    image: postgres
+    restart: always
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1807
+      POSTGRES_DB: topEd
+    ports:
+      - "5432:5432"
+
+  app1:
+    container_name: pep1_tingeso_docker1
+    image: gr3yw0lfchie/tingeso_top_ed
+    ports:
+      - "8091:8090"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-db:5432/topEd
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=1807
+    deploy:
+      restart_policy:
+        condition: on-failure
+    depends_on:
+      - postgres-db
+
+  app2:
+    container_name: pep1_tingeso_docker2
+    image: gr3yw0lfchie/tingeso_top_ed
+    ports:
+      - "8092:8090"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-db:5432/topEd
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=1807
+    deploy:
+      restart_policy:
+        condition: on-failure
+    depends_on:
+      - postgres-db
+
+  app3:
+    container_name: pep1_tingeso_docker3
+    image: gr3yw0lfchie/tingeso_top_ed
+    ports:
+      - "8093:8090"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-db:5432/topEd
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=topEd
+    deploy:
+      restart_policy:
+        condition: on-failure
+    depends_on:
+      - postgres-db

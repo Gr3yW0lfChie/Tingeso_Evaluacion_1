@@ -1,4 +1,6 @@
 HELP.md
+topEducation/data/
+jenkins.war
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
