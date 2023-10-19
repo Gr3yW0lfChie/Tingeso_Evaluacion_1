@@ -91,18 +91,14 @@
 </head>
 <body>
 <header class="header">
-    <div class="logo">
-        <h1>MilkStgo</h1>
-    </div>
     <nav>
     </nav>
     <a class="btn" href="/"><button>Volver al menú principal</button></a>
-    <a class="btn-2" href="/fileInformation"><button>Ver el último CSV cargado</button></a>
 </header>
 <div class = "f">
     <div class="container">
         <h1><b>Cargar el archivo de datos</b></h1>
-        <form th:action="@{/fileUpload}" method="POST" enctype="multipart/form-data">
+        <form th:action="@{/subirArchivo}" method="POST" enctype="multipart/form-data">
             <br>
             <input type="file" class="form-control" name="file" accept = ".csv">
             <br>
@@ -117,7 +113,7 @@
 <hr>
 
 <div class = "form1">
-    <h5><b>Recuerde que debe cargar un archivo Excel de extensión .csv!</b></h5>
+    <h5><b>Recuerde que debe cargar un archivo Excel de extensión .csv</b></h5>
 </div>
 </body>
 </html>

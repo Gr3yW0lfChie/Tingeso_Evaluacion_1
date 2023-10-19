@@ -16,51 +16,32 @@ import java.util.Optional;
 
 
 @Controller
-@RequestMapping("/pruebas")
+@RequestMapping
 public class PruebaController {
 
 	@Autowired
 	private PruebaService pruebaService;
 
 
-	@GetMapping
-	public List<PruebaEntity> obtenerPruebas(){
-		return pruebaService.obtenerPruebas();
-	}
-
-	@GetMapping("/{id}")
-	public Optional<PruebaEntity> obtenerPruebaPorId(@PathVariable Long id){
-		return pruebaService.obtenerPruebaPorId(id);
-	}
-
-	@PostMapping
-	public PruebaEntity crearPrueba(@RequestBody PruebaEntity pruebaEntity){
-		return pruebaService.crearPrueba(pruebaEntity);
-	}
-	/*
-	@DeleteMapping("/{id}")
-	public void eliminarPrueba(@PathVariable Long id){
-		pruebaService.eliminarPrueba(id);
-	}
-	*/
-
 	@GetMapping("/subirArchivo")
 	public String main() {
-		return "subirPrueba";
+		return "subirArchivo";
 	}
 
-	@PostMapping("/SubirArchivo")
+	@PostMapping("/subirArchivo")
 	public String upload(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes) {
 		pruebaService.guardar(file);
 		redirectAttributes.addFlashAttribute("mensaje", "Archivo cargado correctamente");
 		pruebaService.leerCsv("Prueba.csv");
-		return "redirect:/subirPrueba";
+		return "redirect:/subirArchivo";
 	}
 
 	@GetMapping("/informacionPrueba")
 	public String listar(Model model) {
-		ArrayList<PruebaEntity> datas = pruebaService.obtenerPruebas();
-		model.addAttribute("datas", datas);
-		return "informacionPrueba";
+		ArrayList<PruebaEntity> pruebas = pruebaService.obtenerPruebas();
+		model.addAttribute("pruebas", pruebas);
+		return "indexPrueba";
 	}
+
+
 }

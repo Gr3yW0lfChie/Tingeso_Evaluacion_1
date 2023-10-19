@@ -46,7 +46,7 @@ public class AlumnoController {
 								 @RequestParam("nombreColegio") String nombreColegio,
 								 @RequestParam("fechaEgreso") @DateTimeFormat(pattern = "MM/dd/yyyy") LocalDate fechaEgreso){
 		alumnoService.crearAlumno(rut, apellidos, nombres, fechaNacimiento, tipoColegio, nombreColegio, fechaEgreso);
-		int cantidadMaximaCuotas = alumnoService.obtenerCantidadCuotas(rut);
+		int cantidadMaximaCuotas = alumnoService.obtenerCantidadCuotas(tipoColegio);
 		arancelService.crearArancel(rut, 70000, false, 1500000, cantidadMaximaCuotas);
 		return "redirect:/nuevoAlumno";
 	}

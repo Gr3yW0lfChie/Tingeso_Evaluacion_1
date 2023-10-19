@@ -1,6 +1,7 @@
 package Tingeso.TopEducation.controllers;
 
 
+import Tingeso.TopEducation.entities.CuotaEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import Tingeso.TopEducation.services.ArancelService;
@@ -8,18 +9,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import Tingeso.TopEducation.entities.ArancelEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/aranceles")
+@RequestMapping
 public class ArancelController {
 
 	@Autowired
 	private ArancelService arancelService;
-
-
-
 
 	@GetMapping("/buscarArancel")
 	public String buscarArancelForm() {
@@ -37,23 +37,21 @@ public class ArancelController {
 		}else{
 			return "redirect:/buscarArancel";
 		}
-
 	}
 
-	@GetMapping("/creacionCuotas")
-	public String arancel(){
-		return "creacionCuotas";
+
+
+	@PostMapping("/creacionArancelCuotas")
+	public String creacionArancelCuotas(@RequestParam("rutAlumno") String rutAlumno,
+										@RequestParam("matricula") int matricula,
+										@RequestParam("matriculaPagada") boolean matriculaPagada,
+										@RequestParam("arancelBase") int arancelBase,
+										@RequestParam("cantidadCuotas") int cantidadCuotas) {
+		// Lógica para modificar el arancel
+		arancelService.modificarArancel(rutAlumno, matricula, matriculaPagada, arancelBase, cantidadCuotas);
+		return "main";
 	}
 
-	@PostMapping
-	public String creacionCuotas(@RequestParam("rut") String rut,
-								   @RequestParam("matricula") int matricula,
-								   @RequestParam("matriculaPagada") boolean matriculaPagada,
-								   @RequestParam("arancelBase") int arancelBase,
-								   @RequestParam("cantidadCuotas") int cantidadCuotas){
-		arancelService.modificarArancel(rut, matricula, matriculaPagada, arancelBase, cantidadCuotas);
-		return "redirect:/creacionCuotas";
-	}
 	/*
 	@DeleteMapping("/{id}")
 	public void eliminarArancel(@PathVariable Long id){

@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import Tingeso.TopEducation.entities.CuotaEntity;
 import Tingeso.TopEducation.repositories.CuotaRepository;
 
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -61,4 +63,23 @@ public class CuotaService {
 	}
 
 
+	public void modificarCuotasVencidas(LocalDate fechaNueva){
+		ArrayList<CuotaEntity> cuotas = obtenerCuotas();
+		for (CuotaEntity cuota : cuotas){
+			if (cuota.getFechaVencimiento().isBefore(fechaNueva) && !cuota.getCuotaPagada()){
+				Period period = Period.between(cuota.getFechaVencimiento(), fechaNueva);
+				if (period.getMonths() == 1) {
+					cuota.setPorcentajeInteres(3);
+				} else if (period.getMonths() == 2) {
+					cuota.setPorcentajeInteres(6);
+				} else if (period.getMonths() == 3) {
+					cuota.setPorcentajeInteres(9);
+				} else {
+					cuota.setPorcentajeInteres(15);
+				}
+				cuota.setPrecioAPagar(cuota.getPrecioBase() + (cuota.getPrecioBase() * cuota.getPorcentajeInteres() / 100) - (cuota.getPrecioBase() * cuota.getPorcentajeDescuento() / 100));
+				cuotaRepository.save(cuota);
+			}
+		}
+	}
 }

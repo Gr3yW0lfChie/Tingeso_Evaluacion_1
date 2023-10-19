@@ -88,15 +88,19 @@ public class PruebaService {
 
 	@Generated
 	public void leerCsv(String direccion){
+		System.out.println("Leyendo archivo");
 		String texto = "";
 		BufferedReader bf = null;
 		//pruebaRepository.deleteAll();
 		try{
+			System.out.println("Leyendo archivo2");
 			bf = new BufferedReader(new FileReader(direccion));
+			System.out.println("Leyendo archivo3");
 			String temp = "";
 			String bfRead;
 			int count = 1;
 			while((bfRead = bf.readLine()) != null){
+				System.out.println("Leyendo archivo4");
 				if (count == 1){
 					count = 0;
 				}

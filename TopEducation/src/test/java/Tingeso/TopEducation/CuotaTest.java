@@ -129,7 +129,7 @@ public class CuotaTest {
 		ArrayList<CuotaEntity> esperados = new ArrayList<>();
 
 		CuotaEntity aux1 = new CuotaEntity();
-		aux1.setIdCuota(4L);
+		aux1.setIdCuota(8L);
 		aux1.setRutAlumno("12.345.678-2");
 		aux1.setFechaVencimiento(LocalDate.of(2020,10,10));
 		aux1.setCuotaPagada(false);
@@ -139,7 +139,7 @@ public class CuotaTest {
 		aux1.setPrecioAPagar(precioBase);
 
 		CuotaEntity aux2 = new CuotaEntity();
-		aux2.setIdCuota(5L);
+		aux2.setIdCuota(9L);
 		aux2.setRutAlumno("12.345.678-2");
 		aux2.setFechaVencimiento(LocalDate.of(2020,11,10));
 		aux2.setCuotaPagada(false);
@@ -153,6 +153,92 @@ public class CuotaTest {
 
 		ArrayList<CuotaEntity> cuotas = cuotaService.findByRutAlumno("12.345.678-2");
 		assertEquals(esperados, cuotas);
+	}
 
+	//----------------------------------------------------------------------------------------------------------
+	//modificarCuotasVencidas
+
+	@Test
+	@Transactional
+	void modificarCuotasVencidas15(){
+
+		int precioBase = 1500000/4;
+		cuota.setRutAlumno("12.345.678-2");
+		cuota.setFechaVencimiento(LocalDate.of(2020,1,1));
+		cuota.setCuotaPagada(false);
+		cuota.setPrecioBase(precioBase);
+		cuota.setPorcentajeInteres(0);
+		cuota.setPorcentajeDescuento(0);
+		cuota.setPrecioAPagar(precioBase);
+		cuotaService.crearCuota(cuota);
+
+		cuotaService.modificarCuotasVencidas(LocalDate.of(2020,5,1));
+
+		Optional<CuotaEntity> cuotaModificada = cuotaService.obtenerCuotaPorId(cuota.getIdCuota());
+
+		cuotaModificada.ifPresent(cuotaEntity -> assertEquals(15, cuotaEntity.getPorcentajeInteres()));
+	}
+
+	@Test
+	@Transactional
+	void modificarCuotasVencidas9(){
+
+		int precioBase = 1500000/4;
+		cuota.setRutAlumno("12.345.678-2");
+		cuota.setFechaVencimiento(LocalDate.of(2020,2,1));
+		cuota.setCuotaPagada(false);
+		cuota.setPrecioBase(precioBase);
+		cuota.setPorcentajeInteres(0);
+		cuota.setPorcentajeDescuento(0);
+		cuota.setPrecioAPagar(precioBase);
+		cuotaService.crearCuota(cuota);
+
+		cuotaService.modificarCuotasVencidas(LocalDate.of(2020,5,1));
+
+		Optional<CuotaEntity> cuotaModificada = cuotaService.obtenerCuotaPorId(cuota.getIdCuota());
+
+		cuotaModificada.ifPresent(cuotaEntity -> assertEquals(9, cuotaEntity.getPorcentajeInteres()));
+	}
+
+	@Test
+	@Transactional
+	void modificarCuotasVencidas6(){
+
+		int precioBase = 1500000/4;
+		cuota.setRutAlumno("12.345.678-2");
+		cuota.setFechaVencimiento(LocalDate.of(2020,3,1));
+		cuota.setCuotaPagada(false);
+		cuota.setPrecioBase(precioBase);
+		cuota.setPorcentajeInteres(0);
+		cuota.setPorcentajeDescuento(0);
+		cuota.setPrecioAPagar(precioBase);
+		cuotaService.crearCuota(cuota);
+
+		cuotaService.modificarCuotasVencidas(LocalDate.of(2020,5,1));
+
+		Optional<CuotaEntity> cuotaModificada = cuotaService.obtenerCuotaPorId(cuota.getIdCuota());
+
+		cuotaModificada.ifPresent(cuotaEntity -> assertEquals(6, cuotaEntity.getPorcentajeInteres()));
+	}
+
+	@Test
+	@Transactional
+	void modificarCuotasVencidas3(){
+
+		int precioBase = 1500000/4;
+		cuota.setRutAlumno("12.345.678-2");
+		cuota.setFechaVencimiento(LocalDate.of(2020,4,1));
+		cuota.setCuotaPagada(false);
+		cuota.setPrecioBase(precioBase);
+		cuota.setPorcentajeInteres(0);
+		cuota.setPorcentajeDescuento(0);
+		cuota.setPrecioAPagar(precioBase);
+		cuotaService.crearCuota(cuota);
+
+		cuotaService.modificarCuotasVencidas(LocalDate.of(2020,5,1));
+
+		Optional<CuotaEntity> cuotaModificada = cuotaService.obtenerCuotaPorId(cuota.getIdCuota());
+
+		cuotaModificada.ifPresent(cuotaEntity -> assertEquals(3, cuotaEntity.getPorcentajeInteres()));
 	}
 }

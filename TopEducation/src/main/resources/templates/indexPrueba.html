@@ -2,7 +2,7 @@
 <html lang = "es" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Listado de Alumnos</title>
+    <title>Listado de Pruebas</title>
     <link rel="stylesheet"
           href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
@@ -80,32 +80,25 @@
     <nav>
     </nav>
     <a class="btn" href="/"><button>Volver al menú principal</button></a>
-    <a class="btn" href="/nuevoAlumno"><button>Ingresar nuevo Alumno</button></a>
+    <a class="btn" href="/subirArchivo"><button>Subir Prueba Csv</button></a>
 </header>
 <div th:align = "center" class = "container my-2">
 
-    <h1><b> Listado de alumnos</b></h1>
+    <h1><b> Listado de Pruebas</b></h1>
     <table th:border = "1" class = "content-table">
         <thead>
         <tr>
-            <th>Rut</th>
-            <th>Apellidos</th>
-            <th>Nombres</th>
-            <th>Fecha nacimiento</th>
-            <th>Tipo colegio</th>
-            <th>Nombre Colegio</th>
-            <th>Fecha egreso</th>
+            <th>Rut Alumno</th>
+            <th>Fecha Prueba</th>
+            <th>Puntaje</th>
+
         </tr>
         </thead>
         <tbody>
-        <tr th:each="alumno : ${alumnos}">
-            <td th:text="${alumno.rut}"></td>
-            <td th:text="${alumno.apellidos}"></td>
-            <td th:text="${alumno.nombres}"></td>
-            <td th:text="${alumno.fechaNacimiento}"></td>
-            <td th:text="${alumno.tipoColegio}"></td>
-            <td th:text="${alumno.nombreColegio}"></td>
-            <td th:text="${alumno.fechaEgreso}"></td>
+        <tr th:each="prueba : ${pruebas}">
+            <td th:text="${prueba.getAlumno()}"></td>
+            <td th:text="${prueba.getFechaExamen()}"></td>
+            <td th:text="${prueba.getPuntaje()}"></td>
         </tr>
 
         </tbody>
